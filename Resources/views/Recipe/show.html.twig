@@ -1,0 +1,63 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Détail des recettes</h1>
+
+    <a href="{{ path('recipe') }}" class="btn btn-default">
+        Retour à la liste
+    </a>
+
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th>#</th>
+                <td>{{ recipe.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom de la recette</th>
+                <td>{{ recipe.name }}</td>
+            </tr>
+            <tr>
+                <th>Type de plat</th>
+                <td>{{ recipe.type }}</td>
+            </tr>
+            <tr>
+                <th>Nb personnes</th>
+                <td>{{ recipe.people }}</td>
+            </tr>
+            <tr>
+                <th>Temps de cuisson</th>
+                <td>{{ recipe.cookingTime }} min.</td>
+            </tr>
+            <tr>
+                <th>Temps de préparation</th>
+                <td>{{ recipe.preparationTime }} min.</td>
+            </tr>
+            <tr>
+                <th>Auteur</th>
+                <td>{{ recipe.author }}</td>
+            </tr>
+            <tr>
+                <th>Ingredients</th>
+                <td>
+                    <ul>
+                        {% for ingredient in recipe.ingredients %}
+                            <li>{{ ingredient }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('recipe_unvalidate', { 'id': recipe.id }) }}" class="btn btn-danger">
+        Refuser la recette
+    </a>
+    <a href="{{ path('recipe_edit', { 'id': recipe.id }) }}" class="btn btn-default">
+        Modifier la recette
+    </a>
+    <a href="{{ path('recipe_validate', { 'id': recipe.id }) }}" class="btn btn-success">
+        Accepter la recette
+    </a>
+
+{% endblock %}

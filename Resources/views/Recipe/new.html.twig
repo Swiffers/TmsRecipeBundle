@@ -1,0 +1,13 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Créer une recette</h1>
+
+    <a href="{{ path('recipe') }}" class="btn btn-default">
+        Retour à la liste
+    </a>
+
+    {% form_theme form 'TmsRecipeBundle:Form:fields.html.twig' %}
+    {{ form(form, { 'attr': {'class': 'form-horizontal'} }) }}
+
+{% endblock %}
