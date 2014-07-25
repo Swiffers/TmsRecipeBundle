@@ -2,8 +2,13 @@
     <div class="form-group">
     {{- form_label(form, null, { 'label_attr': {'class': 'col-sm-2 control-label'} }) -}}
     <div class="col-sm-10">
-        {{- form_errors(form, { 'attr': {'class': 'form-control'} }) -}}
-        {{- form_widget(form, { 'attr': {'class': 'form-control'} }) -}}
+        {% if not compound %}
+            {{- form_errors(form, { 'attr': {'class': 'form-control'} }) -}}
+            {{- form_widget(form, { 'attr': {'class': 'form-control'} }) -}}
+        {% else %}
+            {{- form_errors(form) -}}
+            {{- form_widget(form) -}}
+        {% endif %}
     </div>
   </div>
 {%- endblock form_row %}

@@ -1,5 +1,6 @@
 {% extends '::base.html.twig' %}
 
+{% block title %}Modifier une recette{% endblock %}
 {% block body -%}
     <h1>Modifier une recette</h1>
 
@@ -7,6 +8,17 @@
         Retour à la liste
     </a>
 
+    {% if recipe.state == constant('Tms\\RecipeBundle\\Entity\\Recipe::STATE_PENDING') %}
+        <div class="alert alert-info" role="alert">
+            <strong>ATTENTION</strong> -- La recette est en cours de traitement.<br />
+            Dernière modification :
+            <strong>
+                Le {{ recipe.updatedAt|date('d-m-Y') }}
+                à {{ recipe.updatedAt|date('H:m') }}
+            </strong>
+        </div>
+    {% endif %}
+ 
     {% form_theme edit_form 'TmsRecipeBundle:Form:fields.html.twig' %}
     {{ form(edit_form, { 'attr': {'class': 'form-horizontal'} }) }}
 

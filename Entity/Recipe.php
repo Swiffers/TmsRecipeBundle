@@ -15,10 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Recipe
 {
-    const STATE_AWAITING     = "Déposée";
-    const STATE_VALIDATED    = "Validée";
-    const STATE_UNVALIDATED  = "Refusée";
-    const STATE_HANDLING     = "En cours";
+    const STATE_AWAITING     = "awaiting";
+    const STATE_VALIDATED    = "validated";
+    const STATE_REFUSED      = "refused";
+    const STATE_PENDING      = "pending";
 
     /**
      * @var integer
@@ -44,16 +44,16 @@ class Recipe
     private $people;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=128)
      */
     private $cookingTime;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=128)
      */
     private $preparationTime;
 
@@ -74,7 +74,7 @@ class Recipe
     /**
      * @var string
      *
-     * @ORM\Column(type="string", columnDefinition="ENUM('Déposée', 'Validée', 'Refusée', 'En cours')")
+     * @ORM\Column(type="string", columnDefinition="ENUM('pending', 'awaiting', 'refused', 'validated')")
      */
     private $state;
 
@@ -224,7 +224,7 @@ class Recipe
      */
     public function setState($state)
     {
-        if (!in_array($state, array(self::STATE_AWAITING, self::STATE_HANDLING, self::STATE_UNVALIDATED, self::STATE_VALIDATED))) {
+        if (!in_array($state, array(self::STATE_AWAITING, self::STATE_PENDING, self::STATE_REFUSED, self::STATE_VALIDATED))) {
             throw new \InvalidArgumentException("Invalid state for recipe.");
         }
         $this->state = $state;
@@ -268,7 +268,7 @@ class Recipe
     /**
      * Set cookingTime
      *
-     * @param integer $cookingTime
+     * @param string $cookingTime
      * @return Recipe
      */
     public function setCookingTime($cookingTime)
@@ -281,7 +281,7 @@ class Recipe
     /**
      * Get cookingTime
      *
-     * @return integer 
+     * @return string 
      */
     public function getCookingTime()
     {
@@ -291,7 +291,7 @@ class Recipe
     /**
      * Set preparationTime
      *
-     * @param integer $preparationTime
+     * @param string $preparationTime
      * @return Recipe
      */
     public function setPreparationTime($preparationTime)
@@ -304,7 +304,7 @@ class Recipe
     /**
      * Get preparationTime
      *
-     * @return integer 
+     * @return string 
      */
     public function getPreparationTime()
     {
@@ -314,12 +314,12 @@ class Recipe
     /**
      * Add ingredients
      *
-     * @param \Tms\RecipeBundle\Entity\Ingredient $ingredients
+     * @param \Tms\RecipeBundle\Entity\Ingredient $ingredient
      * @return Recipe
      */
-    public function addIngredient(\Tms\RecipeBundle\Entity\Ingredient $ingredients)
+    public function addIngredient(\Tms\RecipeBundle\Entity\Ingredient $ingredient)
     {
-        $this->ingredients[] = $ingredients;
+        $this->ingredients[] = $ingredient;
 
         return $this;
     }
@@ -327,11 +327,11 @@ class Recipe
     /**
      * Remove ingredients
      *
-     * @param \Tms\RecipeBundle\Entity\Ingredient $ingredients
+     * @param \Tms\RecipeBundle\Entity\Ingredient $ingredient
      */
-    public function removeIngredient(\Tms\RecipeBundle\Entity\Ingredient $ingredients)
+    public function removeIngredient(\Tms\RecipeBundle\Entity\Ingredient $ingredient)
     {
-        $this->ingredients->removeElement($ingredients);
+        $this->ingredients->removeElement($ingredient);
     }
 
     /**
@@ -342,6 +342,21 @@ class Recipe
     public function getIngredients()
     {
         return $this->ingredients;
+    }
+
+    /**
+     * Add ingredients
+     *
+     * @param ArrayCollection $ingredients
+     * @return Recipe
+     */
+    public function setIngredients(ArrayCollection $ingredients)
+    {
+        foreach ($ingredients as $ingredient) {
+            $ingredient->setRecipe($this);
+        }
+
+        $this->ingredients = $ingredients;
     }
 
     /**

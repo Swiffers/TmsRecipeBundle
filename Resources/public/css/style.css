@@ -8,7 +8,14 @@ table
     margin-right: 15px;
 }
 
-form
+form, .alert
 {
     margin: 20px 0;
 }
+
+.ingredients-hidden-label { display: none; }
+
+.label.label-validated { background-color: #5cb85c; }
+.label.label-refused { background-color: #d9534f; }
+.label.label-awaiting { background-color: #777; }
+.label.label-pending { background-color: #5bc0de; }

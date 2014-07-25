@@ -33,7 +33,7 @@ class Ingredient
 
     /**
      * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="ingredients")
-     * @ORM\JoinColumn(name="recipe_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="recipe_id", referencedColumnName="id", nullable=false)
      */
     protected $recipe;
 

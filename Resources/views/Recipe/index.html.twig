@@ -1,5 +1,6 @@
 {% extends '::base.html.twig' %}
 
+{% block title %}Liste des recettes{% endblock %}
 {% block body -%}
     <h1>Liste des recettes</h1>
 
@@ -23,7 +24,11 @@
                 <td>{{ recipe.name }}</td>
                 <td>{{ recipe.type }}</td>
                 <td>{{ recipe.author }}</td>
-                <td>{{ recipe.state }}</td>
+                <td>
+                    <span class="label label-{{ recipe.state }}">
+                        {{ recipe.state }}
+                    </span>
+                </td>
                 <td>
                     <a href="{{ path('recipe_show', { 'id': recipe.id }) }}" class="btn btn-default">Voir</a>
                 </td>

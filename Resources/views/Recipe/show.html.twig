@@ -1,11 +1,23 @@
 {% extends '::base.html.twig' %}
 
+{% block title %}Détail des recettes{% endblock %}
 {% block body -%}
     <h1>Détail des recettes</h1>
 
     <a href="{{ path('recipe') }}" class="btn btn-default">
         Retour à la liste
     </a>
+
+    {% if recipe.state == constant('Tms\\RecipeBundle\\Entity\\Recipe::STATE_PENDING') %}
+        <div class="alert alert-info" role="alert">
+            <strong>ATTENTION</strong> -- La recette est en cours de traitement.<br />
+            Dernière modification :
+            <strong>
+                Le {{ recipe.updatedAt|date('d-m-Y') }}
+                à {{ recipe.updatedAt|date('H:m') }}
+            </strong>
+        </div>
+    {% endif %}
 
     <table class="table table-striped">
         <tbody>
@@ -22,23 +34,23 @@
                 <td>{{ recipe.type }}</td>
             </tr>
             <tr>
-                <th>Nb personnes</th>
+                <th>Nombre de personnes</th>
                 <td>{{ recipe.people }}</td>
             </tr>
             <tr>
                 <th>Temps de cuisson</th>
-                <td>{{ recipe.cookingTime }} min.</td>
+                <td>{{ recipe.cookingTime }}</td>
             </tr>
             <tr>
                 <th>Temps de préparation</th>
-                <td>{{ recipe.preparationTime }} min.</td>
+                <td>{{ recipe.preparationTime }}</td>
             </tr>
             <tr>
                 <th>Auteur</th>
                 <td>{{ recipe.author }}</td>
             </tr>
             <tr>
-                <th>Ingredients</th>
+                <th>Ingrédients</th>
                 <td>
                     <ul>
                         {% for ingredient in recipe.ingredients %}
@@ -49,15 +61,12 @@
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('recipe_unvalidate', { 'id': recipe.id }) }}" class="btn btn-danger">
-        Refuser la recette
-    </a>
-    <a href="{{ path('recipe_edit', { 'id': recipe.id }) }}" class="btn btn-default">
-        Modifier la recette
-    </a>
-    <a href="{{ path('recipe_validate', { 'id': recipe.id }) }}" class="btn btn-success">
-        Accepter la recette
-    </a>
+    {% if recipe.state != constant('Tms\\RecipeBundle\\Entity\\Recipe::STATE_REFUSED') %}
+        <div class="col-sm-2">{{ form(refuse_form) }}</div>
+    {% endif %}
+    <div class="col-sm-2">{{ form(edit_form) }}</div>
+    {% if recipe.state != constant('Tms\\RecipeBundle\\Entity\\Recipe::STATE_VALIDATED') %}
+        <div class="col-sm-2">{{ form(validate_form) }}</div>
+    {% endif %}
 
 {% endblock %}

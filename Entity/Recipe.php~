@@ -15,10 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Recipe
 {
-    const STATE_AWAITING   = "Déposée";
-    const STATE_VALIDATED  = "Validée";
-    const STATE_REFUSED    = "Refusée";
-    const STATE_HANDLING   = "En cours";
+    const STATE_AWAITING     = "Déposée";
+    const STATE_VALIDATED    = "Validée";
+    const STATE_UNVALIDATED  = "Refusée";
+    const STATE_HANDLING     = "En cours";
 
     /**
      * @var integer
@@ -44,16 +44,16 @@ class Recipe
     private $people;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=128)
      */
     private $cookingTime;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=128)
      */
     private $preparationTime;
 
@@ -79,7 +79,7 @@ class Recipe
     private $state;
 
      /**
-     * @ORM\OneToMany(targetEntity="Ingredient", mappedBy="recipe")
+     * @ORM\OneToMany(targetEntity="Ingredient", mappedBy="recipe", cascade={"persist", "remove"})
      */
     protected $ingredients;
 
@@ -224,7 +224,7 @@ class Recipe
      */
     public function setState($state)
     {
-        if (!in_array($state, array(self::STATE_AWAITING, self::STATE_HANDLING, self::STATE_REFUSED, self::STATE_VALIDATED))) {
+        if (!in_array($state, array(self::STATE_AWAITING, self::STATE_HANDLING, self::STATE_UNVALIDATED, self::STATE_VALIDATED))) {
             throw new \InvalidArgumentException("Invalid state for recipe.");
         }
         $this->state = $state;
@@ -268,7 +268,7 @@ class Recipe
     /**
      * Set cookingTime
      *
-     * @param integer $cookingTime
+     * @param string $cookingTime
      * @return Recipe
      */
     public function setCookingTime($cookingTime)
@@ -281,7 +281,7 @@ class Recipe
     /**
      * Get cookingTime
      *
-     * @return integer 
+     * @return string 
      */
     public function getCookingTime()
     {
@@ -291,7 +291,7 @@ class Recipe
     /**
      * Set preparationTime
      *
-     * @param integer $preparationTime
+     * @param string $preparationTime
      * @return Recipe
      */
     public function setPreparationTime($preparationTime)
@@ -304,7 +304,7 @@ class Recipe
     /**
      * Get preparationTime
      *
-     * @return integer 
+     * @return string 
      */
     public function getPreparationTime()
     {
@@ -345,6 +345,21 @@ class Recipe
     }
 
     /**
+     * Add ingredients
+     *
+     * @param ArrayCollection $ingredients
+     * @return Recipe
+     */
+    public function setIngredients(ArrayCollection $ingredients)
+    {
+        foreach ($ingredients as $ingredient) {
+            $ingredient->setRecipe($this);
+        }
+
+        $this->ingredients = $ingredients;
+    }
+
+    /**
      * Set preparation
      *
      * @param string $preparation
@@ -365,5 +380,51 @@ class Recipe
     public function getPreparation()
     {
         return $this->preparation;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Recipe
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Recipe
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }

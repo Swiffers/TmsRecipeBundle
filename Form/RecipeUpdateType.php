@@ -18,7 +18,7 @@ class RecipeUpdateType extends RecipeType
                     'class' => 'btn btn-success'
                 )
             ))
-            ->add('save_and_unvalidate', 'submit', array(
+            ->add('save_and_refuse', 'submit', array(
                 'label' => 'Refuser la recette',
                 'attr'  => array(
                     'class' => 'btn btn-danger'

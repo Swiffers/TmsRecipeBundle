@@ -35,9 +35,11 @@ class RecipeType extends AbstractType
             ))
             ->add('ingredients', 'collection', array(
                 'type'          => new IngredientType(),
+                'label'         => 'Ingrédients',
+                'options'       => array('label' => false),
                 'allow_add'     => true,
+                'allow_delete'  => true,
                 'by_reference'  => false,
-                'label'         => 'Ingrédients'
             ))
             ->add('preparation', null, array(
                 'label' => 'Préparation'

@@ -59,7 +59,12 @@ class RecipeController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $recipe->setState(Recipe::STATE_AWAITING);
             $em->persist($recipe);
+            foreach ($recipe->getIngredients() as $ingredient) {
+                $ingredient->setRecipe($recipe);
+                $em->persist($ingredient);
+            }
             $em->flush();
 
             return $this->redirect($this->generateUrl('recipe_show', array('id' => $recipe->getId())));
@@ -81,8 +86,10 @@ class RecipeController extends Controller
     public function newAction()
     {
         $recipe = new Recipe();
-        $ingredient = new Ingredient();
-        $recipe->getIngredients()->add($ingredient);
+        $ingredient1 = new Ingredient();
+        $recipe->getIngredients()->add($ingredient1);
+        $ingredient2 = new Ingredient();
+        $recipe->getIngredients()->add($ingredient2);
         $form = $this->createForm(new RecipeCreateType(), $recipe, array(
             'action' => $this->generateUrl('recipe_create'),
             'method' => 'POST',
@@ -104,8 +111,34 @@ class RecipeController extends Controller
      */
     public function showAction(Recipe $recipe)
     {
+        $refuseForm = $this->createUpdateForm(
+            $this->generateUrl('recipe_change_state', array(
+                'id'    => $recipe->getId(),
+                'state' => Recipe::STATE_REFUSED
+            )),
+            "Refuser la recette",
+            "btn-danger"
+        );
+        $validateForm = $this->createUpdateForm(
+            $this->generateUrl('recipe_change_state', array(
+                'id'    => $recipe->getId(),
+                'state' => Recipe::STATE_VALIDATED
+            )),
+            "Accepter la recette",
+            "btn-success"
+        );
+        $editForm = $this->createUpdateForm(
+            $this->generateUrl('recipe_edit', array(
+                'id' => $recipe->getId()
+            )),
+            "Modifier"
+        );
+
         return array(
-            'recipe' => $recipe,
+            'recipe'        => $recipe,
+            'refuse_form'   => $refuseForm->createView(),
+            'validate_form' => $validateForm->createView(),
+            'edit_form'     => $editForm->createView()
         );
     }
 
@@ -114,21 +147,43 @@ class RecipeController extends Controller
      *
      * @Route("/{id}/edit", name="recipe_edit")
      * @ParamConverter("recipe", options={"mapping": {"id": "id"}})
-     * @Method("GET")
+     * @Method({"PATCH", "POST"})
      * @Template()
      */
     public function editAction(Recipe $recipe)
     {
+        $em = $this->getDoctrine()->getManager();
+        $recipe->setState(Recipe::STATE_PENDING);
+        $em->flush();
+
         $editForm = $this->createForm(new RecipeUpdateType(), $recipe, array(
             'action' => $this->generateUrl('recipe_update', array(
                 'id' => $recipe->getId()
             )),
             'method' => 'PUT',
         ));
+        $refuseForm = $this->createUpdateForm(
+            $this->generateUrl('recipe_change_state', array(
+                'id'    => $recipe->getId(),
+                'state' => Recipe::STATE_REFUSED
+            )),
+            "Refuser la recette",
+            "btn-danger"
+        );
+        $validateForm = $this->createUpdateForm(
+            $this->generateUrl('recipe_change_state', array(
+                'id'    => $recipe->getId(),
+                'state' => Recipe::STATE_VALIDATED
+            )),
+            "Accepter la recette",
+            "btn-success"
+        );
 
         return array(
-            'recipe'      => $recipe,
-            'edit_form'   => $editForm->createView(),
+            'recipe'        => $recipe,
+            'edit_form'     => $editForm->createView(),
+            'refuse_form'   => $refuseForm->createView(),
+            'validate_form' => $validateForm->createView(),
         );
     }
 
@@ -152,15 +207,19 @@ class RecipeController extends Controller
 
         if ($editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
-            if ($editForm->get('save_and_validate')->isClicked()) {
-                return $this->redirect($this->generateUrl('recipe_validate', array('id' => $recipe->getId())));
-            } else if ($editForm->get('save_and_unvalidate')->isClicked()) {
-                return $this->redirect($this->generateUrl('recipe_unvalidate', array('id' => $recipe->getId())));
+            foreach ($recipe->getIngredients() as $ingredient) {
+                $ingredient->setRecipe($recipe);
+                $em->persist($ingredient);
             }
 
-            return $this->redirect($this->generateUrl('recipe_edit', array('id' => $recipe->getId())));
+            if ($editForm->get('save_and_validate')->isClicked()) {
+                $recipe->setState(Recipe::STATE_VALIDATED);
+            } else if ($editForm->get('save_and_unvalidate')->isClicked()) {
+                $recipe->setState(Recipe::STATE_REFUSED);
+            }
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('recipe'));
         }
 
         return array(
@@ -172,36 +231,51 @@ class RecipeController extends Controller
     /**
      * Validates an existing recipe
      *
-     * @Route("/{id}/validate", name="recipe_validate")
+     * @Route("/{id}/change-state/{state}", name="recipe_change_state")
      * @ParamConverter("recipe", options={"mapping": {"id": "id"}})
-     * @Method("GET")
-     * @Template()
+     * @Method({"PATCH", "POST"})
      */
-    public function validateAction(Recipe $recipe)
+    public function changeStateAction(Recipe $recipe, $state)
     {
-        $recipe->setState(Recipe::STATE_VALIDATED);
+        if (!in_array($state, array(
+            Recipe::STATE_AWAITING,
+            Recipe::STATE_VALIDATED,
+            Recipe::STATE_REFUSED,
+            Recipe::STATE_PENDING)
+        )) {
+            throw new \InvalidArgumentException();
+        }
+
+        $recipe->setState($state);
 
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
         return $this->redirect($this->generateUrl('recipe'));
     }
-
+    
     /**
-     * Unvalidates an existing recipe
+     * Creates a form to update a recipe
      *
-     * @Route("/{id}/unvalidate", name="recipe_unvalidate")
-     * @ParamConverter("recipe", options={"mapping": {"id": "id"}})
-     * @Method("GET")
-     * @Template()
+     * @param string  $action Form action
+     * @param string  $label Label to display in the form submit
+     * @param string  $class Class to set in the form submit
+     * @param string  $method Form Method
+     *
+     * @return \Symfony\Component\Form\Form The form
      */
-    public function unvalidateAction(Recipe $recipe)
+    private function createUpdateForm($action, $label, $class = "", $method = 'POST')
     {
-        $recipe->setState(Recipe::STATE_REFUSED);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('recipe'));
+        return $this->createFormBuilder()
+            ->setAction($action)
+            ->setMethod($method)
+            ->add('submit', 'submit', array(
+                'label' => $label,
+                'attr'  => array(
+                    'class' => sprintf("btn btn-block %s", $class)
+                )
+            ))
+            ->getForm()
+        ;
     }
 }
