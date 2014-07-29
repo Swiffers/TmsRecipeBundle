@@ -12,6 +12,7 @@ use Tms\RecipeBundle\Entity\Ingredient;
 use Tms\RecipeBundle\Form\RecipeCreateType;
 use Tms\RecipeBundle\Form\RecipeUpdateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Recipe controller.
@@ -196,36 +197,53 @@ class RecipeController extends Controller
      */
     public function updateAction(Request $request, Recipe $recipe)
     {
+        $em = $this->getDoctrine()->getManager();
+        $originalIngredients = new ArrayCollection();
+        foreach ($recipe->getIngredients() as $ingredient) {
+            $originalIngredients->add($ingredient);
+        }
+
         $editForm = $this->createForm(new RecipeUpdateType(), $recipe, array(
             'action' => $this->generateUrl('recipe_update', array(
                 'id' => $recipe->getId()
             )),
             'method' => 'PUT',
         ));
-
         $editForm->handleRequest($request);
-
         if ($editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            foreach ($recipe->getIngredients() as $ingredient) {
-                $ingredient->setRecipe($recipe);
-                $em->persist($ingredient);
+            var_dump($originalIngredients, $recipe->getIngredients()); die;
+            foreach ($originalIngredients as $ingredient) {
+                if ($recipe->getIngredients()->contains($ingredient) == false) {
+                    $recipe->getIngredients()->removeElement($ingredient);
+                    $em->remove($ingredient);
+                } else {
+                    $ingredient->setRecipe($recipe);
+                    $em->persist($ingredient);
+                }
             }
+            
+            $em->persist($recipe);
+            $em->flush();
 
             if ($editForm->get('save_and_validate')->isClicked()) {
-                $recipe->setState(Recipe::STATE_VALIDATED);
-            } else if ($editForm->get('save_and_unvalidate')->isClicked()) {
-                $recipe->setState(Recipe::STATE_REFUSED);
+                return $this->forward('TmsRecipeBundle:Recipe:changeState', array(
+                    'recipe' => $recipe,
+                    'state'  => Recipe::STATE_VALIDATED,
+                ));
+            } else if ($editForm->get('save_and_refuse')->isClicked()) {
+                return $this->forward('TmsRecipeBundle:Recipe:changeState', array(
+                    'recipe' => $recipe,
+                    'state'  => Recipe::STATE_REFUSED,
+                ));
             }
-            $em->flush();
 
             return $this->redirect($this->generateUrl('recipe'));
         }
 
-        return array(
-            'recipe'      => $recipe,
-            'edit_form'   => $editForm->createView()
-        );
+        return $this->forward('TmsRecipeBundle:Recipe:edit', array(
+            'recipe'     => $recipe,
+            'edit_form'  => $editForm->createView()
+        ));
     }
 
     /**
