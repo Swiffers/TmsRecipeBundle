@@ -211,7 +211,7 @@ class RecipeController extends Controller
         ));
         $editForm->handleRequest($request);
         if ($editForm->isValid()) {
-            var_dump($originalIngredients, $recipe->getIngredients()); die;
+//            var_dump($originalIngredients, $recipe->getIngredients()); die;
             foreach ($originalIngredients as $ingredient) {
                 if ($recipe->getIngredients()->contains($ingredient) == false) {
                     $recipe->getIngredients()->removeElement($ingredient);

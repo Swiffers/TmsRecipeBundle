@@ -105,6 +105,14 @@ class Recipe
     private $updatedAt;
 
     /**
+     * @var Media
+     *
+     * @ORM\OneToOne(targetEntity="Tms\Bundle\MediaClientBundle\Entity\Media", cascade={"all"})
+     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    private $media;
+
+    /**
      * @ORM\PrePersist()
      */
     public function onCreate()
@@ -426,5 +434,28 @@ class Recipe
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set media
+     *
+     * @param \Tms\Bundle\MediaClientBundle\Entity\Media $media
+     * @return Recipe
+     */
+    public function setMedia(\Tms\Bundle\MediaClientBundle\Entity\Media $media)
+    {
+        $this->media = $media;
+
+        return $this;
+    }
+
+    /**
+     * Get media
+     *
+     * @return \Tms\Bundle\MediaClientBundle\Entity\Media 
+     */
+    public function getMedia()
+    {
+        return $this->media;
     }
 }

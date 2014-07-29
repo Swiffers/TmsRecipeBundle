@@ -44,6 +44,9 @@ class RecipeType extends AbstractType
             ->add('preparation', null, array(
                 'label' => 'Préparation'
             ))
+            ->add('media', 'related_to_one_media', array(
+                'data' => $builder->getData()->getMedia()
+            ))
         ;
     }
     
