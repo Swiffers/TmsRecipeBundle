@@ -15,10 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Recipe
 {
-    const STATE_AWAITING     = "Déposée";
-    const STATE_VALIDATED    = "Validée";
-    const STATE_UNVALIDATED  = "Refusée";
-    const STATE_HANDLING     = "En cours";
+    const STATE_AWAITING     = "awaiting";
+    const STATE_VALIDATED    = "validated";
+    const STATE_REFUSED      = "refused";
+    const STATE_PENDING      = "pending";
 
     /**
      * @var integer
@@ -74,12 +74,12 @@ class Recipe
     /**
      * @var string
      *
-     * @ORM\Column(type="string", columnDefinition="ENUM('Déposée', 'Validée', 'Refusée', 'En cours')")
+     * @ORM\Column(type="string", columnDefinition="ENUM('pending', 'awaiting', 'refused', 'validated')")
      */
     private $state;
 
      /**
-     * @ORM\OneToMany(targetEntity="Ingredient", mappedBy="recipe", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Ingredient", mappedBy="recipe")
      */
     protected $ingredients;
 
@@ -103,6 +103,14 @@ class Recipe
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @var Media
+     *
+     * @ORM\OneToOne(targetEntity="Tms\Bundle\MediaClientBundle\Entity\Media", cascade={"all"})
+     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    private $media;
 
     /**
      * @ORM\PrePersist()
@@ -224,7 +232,7 @@ class Recipe
      */
     public function setState($state)
     {
-        if (!in_array($state, array(self::STATE_AWAITING, self::STATE_HANDLING, self::STATE_UNVALIDATED, self::STATE_VALIDATED))) {
+        if (!in_array($state, array(self::STATE_AWAITING, self::STATE_PENDING, self::STATE_REFUSED, self::STATE_VALIDATED))) {
             throw new \InvalidArgumentException("Invalid state for recipe.");
         }
         $this->state = $state;
@@ -314,12 +322,12 @@ class Recipe
     /**
      * Add ingredients
      *
-     * @param \Tms\RecipeBundle\Entity\Ingredient $ingredients
+     * @param \Tms\RecipeBundle\Entity\Ingredient $ingredient
      * @return Recipe
      */
-    public function addIngredient(\Tms\RecipeBundle\Entity\Ingredient $ingredients)
+    public function addIngredient(\Tms\RecipeBundle\Entity\Ingredient $ingredient)
     {
-        $this->ingredients[] = $ingredients;
+        $this->ingredients[] = $ingredient;
 
         return $this;
     }
@@ -327,11 +335,11 @@ class Recipe
     /**
      * Remove ingredients
      *
-     * @param \Tms\RecipeBundle\Entity\Ingredient $ingredients
+     * @param \Tms\RecipeBundle\Entity\Ingredient $ingredient
      */
-    public function removeIngredient(\Tms\RecipeBundle\Entity\Ingredient $ingredients)
+    public function removeIngredient(\Tms\RecipeBundle\Entity\Ingredient $ingredient)
     {
-        $this->ingredients->removeElement($ingredients);
+        $this->ingredients->removeElement($ingredient);
     }
 
     /**
@@ -426,5 +434,28 @@ class Recipe
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set media
+     *
+     * @param \Tms\Bundle\MediaClientBundle\Entity\Media $media
+     * @return Recipe
+     */
+    public function setMedia(\Tms\Bundle\MediaClientBundle\Entity\Media $media)
+    {
+        $this->media = $media;
+
+        return $this;
+    }
+
+    /**
+     * Get media
+     *
+     * @return \Tms\Bundle\MediaClientBundle\Entity\Media 
+     */
+    public function getMedia()
+    {
+        return $this->media;
     }
 }

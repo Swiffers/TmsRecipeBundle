@@ -22,13 +22,23 @@
     <table class="table table-striped">
         <tbody>
             <tr>
-                <th>#</th>
-                <td>{{ recipe.id }}</td>
+                <th>#{{ recipe.id }}</th>
+                <td>
+                    <span class="label label-{{ recipe.state }}">
+                        {{ recipe.state }}
+                    </span>
+                </td>
             </tr>
             <tr>
                 <th>Nom de la recette</th>
                 <td>{{ recipe.name }}</td>
             </tr>
+            {% if recipe.media %}
+                <tr>
+                    <th>Image</th>
+                    <td><img src="{{ recipe.media.publicUri }}" /></td>
+                </tr>
+            {% endif %}
             <tr>
                 <th>Type de plat</th>
                 <td>{{ recipe.type }}</td>
