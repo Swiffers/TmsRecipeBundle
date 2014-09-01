@@ -1,0 +1,28 @@
+{
+    "name": "tms/recipe-bundle",
+    "type": "symfony-bundle",
+    "description": "TMS RecipeBundle",
+    "keywords": [],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "TESSI MARKETING",
+            "email": "contact@tessi.fr",
+            "homepage": "http://www.tessi.fr"
+        }
+    ],
+    "require": {
+        "php":                                 ">=5.3.3",
+        "symfony/framework-bundle":            ">=2.3",
+        "doctrine/orm":                        ">=2.2.3,<2.4-dev",
+        "doctrine/doctrine-bundle":            "1.2.*",
+        "twig/twig":                           "*",
+        "jms/serializer-bundle":               "dev-master",
+        "friendsofsymfony/rest-bundle":        "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Tms\\Bundle\\RecipeBundle": "" }
+    },
+    "target-dir": "Tms/Bundle/RecipeBundle",
+    "minimum-stability": "dev"
+}
