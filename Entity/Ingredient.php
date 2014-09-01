@@ -9,7 +9,7 @@ namespace Tms\Bundle\RecipeBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Tms\RecipeBundle\Entity\Repository\IngredientRepository")
+ * @ORM\Entity(repositoryClass="Tms\Bundle\RecipeBundle\Entity\Repository\IngredientRepository")
  * @ORM\Table(name="ingredient")
  * @ORM\HasLifecycleCallbacks()
  */
