@@ -148,7 +148,7 @@ class Recipe
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -171,7 +171,7 @@ class Recipe
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -194,7 +194,7 @@ class Recipe
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -217,7 +217,7 @@ class Recipe
     /**
      * Get author
      *
-     * @return string 
+     * @return string
      */
     public function getAuthor()
     {
@@ -243,7 +243,7 @@ class Recipe
     /**
      * Get state
      *
-     * @return string 
+     * @return string
      */
     public function getState()
     {
@@ -266,7 +266,7 @@ class Recipe
     /**
      * Get people
      *
-     * @return integer 
+     * @return integer
      */
     public function getPeople()
     {
@@ -289,7 +289,7 @@ class Recipe
     /**
      * Get cookingTime
      *
-     * @return string 
+     * @return string
      */
     public function getCookingTime()
     {
@@ -312,7 +312,7 @@ class Recipe
     /**
      * Get preparationTime
      *
-     * @return string 
+     * @return string
      */
     public function getPreparationTime()
     {
@@ -345,7 +345,7 @@ class Recipe
     /**
      * Get ingredients
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getIngredients()
     {
@@ -383,7 +383,7 @@ class Recipe
     /**
      * Get preparation
      *
-     * @return string 
+     * @return string
      */
     public function getPreparation()
     {
@@ -406,7 +406,7 @@ class Recipe
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -429,7 +429,7 @@ class Recipe
     /**
      * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -452,7 +452,7 @@ class Recipe
     /**
      * Get media
      *
-     * @return \Tms\Bundle\MediaClientBundle\Entity\Media 
+     * @return \Tms\Bundle\MediaClientBundle\Entity\Media
      */
     public function getMedia()
     {

@@ -45,7 +45,7 @@ class Ingredient
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -68,7 +68,7 @@ class Ingredient
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -91,7 +91,7 @@ class Ingredient
     /**
      * Get recipe
      *
-     * @return \Tms\RecipeBundle\Entity\Recipe 
+     * @return \Tms\RecipeBundle\Entity\Recipe
      */
     public function getRecipe()
     {
