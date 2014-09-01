@@ -16,8 +16,7 @@
         "symfony/framework-bundle":            ">=2.3",
         "doctrine/orm":                        ">=2.2.3,<2.4-dev",
         "doctrine/doctrine-bundle":            "1.2.*",
-        "twig/twig":                           "*",
-        "friendsofsymfony/rest-bundle":        "dev-master"
+        "twig/twig":                           "*"
     },
     "autoload": {
         "psr-0": { "Tms\\Bundle\\RecipeBundle": "" }
