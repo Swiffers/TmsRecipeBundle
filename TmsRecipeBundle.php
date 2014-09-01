@@ -1,6 +1,6 @@
 <?php
 
-namespace Tms\RecipeBundle;
+namespace Tms\Bundle\RecipeBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

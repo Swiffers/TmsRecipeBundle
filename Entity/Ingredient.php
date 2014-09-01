@@ -4,7 +4,7 @@
  * @author Pierre FERROLLIET <pierre.ferrolliet@idci-consulting.fr>
  */
 
-namespace Tms\RecipeBundle\Entity;
+namespace Tms\Bundle\RecipeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

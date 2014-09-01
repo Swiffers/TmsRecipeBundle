@@ -1,6 +1,6 @@
 <?php
 
-namespace Tms\RecipeBundle\Form;
+namespace Tms\Bundle\RecipeBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tms\RecipeBundle\Tests\Controller;
+namespace Tms\Bundle\RecipeBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

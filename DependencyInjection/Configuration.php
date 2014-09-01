@@ -1,6 +1,6 @@
 <?php
 
-namespace Tms\RecipeBundle\DependencyInjection;
+namespace Tms\Bundle\RecipeBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

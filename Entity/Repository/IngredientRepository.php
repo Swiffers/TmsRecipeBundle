@@ -1,6 +1,6 @@
 <?php
 
-namespace Tms\RecipeBundle\Entity\Repository;
+namespace Tms\Bundle\RecipeBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
