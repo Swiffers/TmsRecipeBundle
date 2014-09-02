@@ -8,7 +8,7 @@
         Retour à la liste
     </a>
 
-    {% if recipe.state == constant('Tms\\RecipeBundle\\Entity\\Recipe::STATE_PENDING') %}
+    {% if recipe.state == constant('Tms\\Bundle\\RecipeBundle\\Entity\\Recipe::STATE_PENDING') %}
         <div class="alert alert-info" role="alert">
             <strong>ATTENTION</strong> -- La recette est en cours de traitement.<br />
             Dernière modification :
@@ -71,11 +71,11 @@
             </tr>
         </tbody>
     </table>
-    {% if recipe.state != constant('Tms\\RecipeBundle\\Entity\\Recipe::STATE_REFUSED') %}
+    {% if recipe.state != constant('Tms\\Bundle\\RecipeBundle\\Entity\\Recipe::STATE_REFUSED') %}
         <div class="col-sm-2">{{ form(refuse_form) }}</div>
     {% endif %}
     <div class="col-sm-2">{{ form(edit_form) }}</div>
-    {% if recipe.state != constant('Tms\\RecipeBundle\\Entity\\Recipe::STATE_VALIDATED') %}
+    {% if recipe.state != constant('Tms\\Bundle\\RecipeBundle\\Entity\\Recipe::STATE_VALIDATED') %}
         <div class="col-sm-2">{{ form(validate_form) }}</div>
     {% endif %}
 

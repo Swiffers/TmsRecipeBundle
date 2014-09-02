@@ -3,7 +3,7 @@
 {% block body -%}
     <h1>Ingredient list</h1>
 
-    <table class="records_list">
+    <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
             <tr>
                 <th>Id</th>
@@ -19,10 +19,10 @@
                 <td>
                 <ul>
                     <li>
-                        <a href="{{ path('ingredient_show', { 'id': entity.id }) }}">show</a>
+                        <a class="btn btn-default btn-sm" href="{{ path('ingredient_show', { 'id': entity.id }) }}">show</a>
                     </li>
                     <li>
-                        <a href="{{ path('ingredient_edit', { 'id': entity.id }) }}">edit</a>
+                        <a class="btn btn-default btn-sm" href="{{ path('ingredient_edit', { 'id': entity.id }) }}">edit</a>
                     </li>
                 </ul>
                 </td>

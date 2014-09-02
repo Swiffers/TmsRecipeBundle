@@ -7,6 +7,7 @@
 namespace Tms\Bundle\RecipeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="Tms\Bundle\RecipeBundle\Entity\Repository\RecipeRepository")
@@ -322,10 +323,10 @@ class Recipe
     /**
      * Add ingredients
      *
-     * @param \Tms\RecipeBundle\Entity\Ingredient $ingredient
+     * @param \Tms\Bundle\RecipeBundle\Entity\Ingredient $ingredient
      * @return Recipe
      */
-    public function addIngredient(\Tms\RecipeBundle\Entity\Ingredient $ingredient)
+    public function addIngredient(\Tms\Bundle\RecipeBundle\Entity\Ingredient $ingredient)
     {
         $this->ingredients[] = $ingredient;
 
@@ -335,9 +336,9 @@ class Recipe
     /**
      * Remove ingredients
      *
-     * @param \Tms\RecipeBundle\Entity\Ingredient $ingredient
+     * @param \Tms\Bundle\RecipeBundle\Entity\Ingredient $ingredient
      */
-    public function removeIngredient(\Tms\RecipeBundle\Entity\Ingredient $ingredient)
+    public function removeIngredient(\Tms\Bundle\RecipeBundle\Entity\Ingredient $ingredient)
     {
         $this->ingredients->removeElement($ingredient);
     }

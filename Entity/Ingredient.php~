@@ -4,12 +4,12 @@
  * @author Pierre FERROLLIET <pierre.ferrolliet@idci-consulting.fr>
  */
 
-namespace Tms\RecipeBundle\Entity;
+namespace Tms\Bundle\RecipeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Tms\RecipeBundle\Entity\Repository\IngredientRepository")
+ * @ORM\Entity(repositoryClass="Tms\Bundle\RecipeBundle\Entity\Repository\IngredientRepository")
  * @ORM\Table(name="ingredient")
  * @ORM\HasLifecycleCallbacks()
  */
@@ -33,7 +33,7 @@ class Ingredient
 
     /**
      * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="ingredients")
-     * @ORM\JoinColumn(name="recipe_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="recipe_id", referencedColumnName="id", nullable=true)
      */
     protected $recipe;
 
@@ -45,7 +45,7 @@ class Ingredient
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -68,33 +68,10 @@ class Ingredient
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set recipe
-     *
-     * @param \Tms\RecipeBundle\Entity\Recipe $recipe
-     * @return Ingredient
-     */
-    public function setRecipe(\Tms\RecipeBundle\Entity\Recipe $recipe = null)
-    {
-        $this->recipe = $recipe;
-
-        return $this;
-    }
-
-    /**
-     * Get recipe
-     *
-     * @return \Tms\RecipeBundle\Entity\Recipe 
-     */
-    public function getRecipe()
-    {
-        return $this->recipe;
     }
 }

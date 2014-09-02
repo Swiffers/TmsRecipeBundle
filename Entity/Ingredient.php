@@ -33,7 +33,7 @@ class Ingredient
 
     /**
      * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="ingredients")
-     * @ORM\JoinColumn(name="recipe_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="recipe_id", referencedColumnName="id", nullable=true)
      */
     protected $recipe;
 
@@ -78,10 +78,10 @@ class Ingredient
     /**
      * Set recipe
      *
-     * @param \Tms\RecipeBundle\Entity\Recipe $recipe
+     * @param \Tms\Bundle\RecipeBundle\Entity\Recipe $recipe
      * @return Ingredient
      */
-    public function setRecipe(\Tms\RecipeBundle\Entity\Recipe $recipe = null)
+    public function setRecipe(\Tms\Bundle\RecipeBundle\Entity\Recipe $recipe = null)
     {
         $this->recipe = $recipe;
 
@@ -91,7 +91,7 @@ class Ingredient
     /**
      * Get recipe
      *
-     * @return \Tms\RecipeBundle\Entity\Recipe
+     * @return \Tms\Bundle\RecipeBundle\Entity\Recipe
      */
     public function getRecipe()
     {

@@ -20,14 +20,14 @@ class IngredientType extends AbstractType
             ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Tms\RecipeBundle\Entity\Ingredient'
+            'data_class' => 'Tms\Bundle\RecipeBundle\Entity\Ingredient'
         ));
     }
 

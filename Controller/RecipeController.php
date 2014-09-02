@@ -7,10 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Tms\RecipeBundle\Entity\Recipe;
-use Tms\RecipeBundle\Entity\Ingredient;
-use Tms\RecipeBundle\Form\RecipeCreateType;
-use Tms\RecipeBundle\Form\RecipeUpdateType;
+use Tms\Bundle\RecipeBundle\Entity\Recipe;
+use Tms\Bundle\RecipeBundle\Entity\Ingredient;
+use Tms\Bundle\RecipeBundle\Form\RecipeCreateType;
+use Tms\Bundle\RecipeBundle\Form\RecipeUpdateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -31,7 +31,7 @@ class RecipeController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager('recipe');
         $recipes = $em
             ->getRepository('TmsRecipeBundle:Recipe')
             ->findAll()
@@ -59,7 +59,7 @@ class RecipeController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager('recipe');
             $recipe->setState(Recipe::STATE_AWAITING);
             $em->persist($recipe);
             foreach ($recipe->getIngredients() as $ingredient) {
@@ -153,7 +153,7 @@ class RecipeController extends Controller
      */
     public function editAction(Recipe $recipe)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager('recipe');
         $recipe->setState(Recipe::STATE_PENDING);
         $em->flush();
 
@@ -197,7 +197,7 @@ class RecipeController extends Controller
      */
     public function updateAction(Request $request, Recipe $recipe)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager('recipe');
         $originalIngredients = new ArrayCollection();
         foreach ($recipe->getIngredients() as $ingredient) {
             $originalIngredients->add($ingredient);
@@ -221,7 +221,7 @@ class RecipeController extends Controller
                     $em->persist($ingredient);
                 }
             }
-            
+
             $em->persist($recipe);
             $em->flush();
 
@@ -266,12 +266,12 @@ class RecipeController extends Controller
 
         $recipe->setState($state);
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager('recipe');
         $em->flush();
 
         return $this->redirect($this->generateUrl('recipe'));
     }
-    
+
     /**
      * Creates a form to update a recipe
      *

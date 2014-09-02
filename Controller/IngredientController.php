@@ -7,8 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Tms\RecipeBundle\Entity\Ingredient;
-use Tms\RecipeBundle\Form\IngredientType;
+use Tms\Bundle\RecipeBundle\Entity\Ingredient;
+use Tms\Bundle\RecipeBundle\Form\IngredientType;
 
 /**
  * Ingredient controller.
@@ -27,7 +27,7 @@ class IngredientController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager('recipe');
 
         $entities = $em->getRepository('TmsRecipeBundle:Ingredient')->findAll();
 
@@ -49,7 +49,7 @@ class IngredientController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager('recipe');
             $em->persist($entity);
             $em->flush();
 
@@ -108,7 +108,7 @@ class IngredientController extends Controller
      */
     public function showAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager('recipe');
 
         $entity = $em->getRepository('TmsRecipeBundle:Ingredient')->find($id);
 
@@ -133,7 +133,7 @@ class IngredientController extends Controller
      */
     public function editAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager('recipe');
 
         $entity = $em->getRepository('TmsRecipeBundle:Ingredient')->find($id);
 
@@ -178,7 +178,7 @@ class IngredientController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager('recipe');
 
         $entity = $em->getRepository('TmsRecipeBundle:Ingredient')->find($id);
 
@@ -214,7 +214,7 @@ class IngredientController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager('recipe');
             $entity = $em->getRepository('TmsRecipeBundle:Ingredient')->find($id);
 
             if (!$entity) {

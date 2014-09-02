@@ -8,7 +8,7 @@
         Retour à la liste
     </a>
 
-    {% if recipe.state == constant('Tms\\RecipeBundle\\Entity\\Recipe::STATE_PENDING') %}
+    {% if recipe.state == constant('Tms\\Bundle\\RecipeBundle\\Entity\\Recipe::STATE_PENDING') %}
         <div class="alert alert-info" role="alert">
             <strong>ATTENTION</strong> -- La recette est en cours de traitement.<br />
             Dernière modification :

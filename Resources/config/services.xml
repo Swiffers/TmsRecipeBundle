@@ -6,7 +6,7 @@
 
     <!--
     <parameters>
-        <parameter key="tms_recipe.example.class">Tms\RecipeBundle\Example</parameter>
+        <parameter key="tms_recipe.example.class">Tms\Bundle\RecipeBundle\Example</parameter>
     </parameters>
 
     <services>
