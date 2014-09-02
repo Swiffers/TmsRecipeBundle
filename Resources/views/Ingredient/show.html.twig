@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends "TmsRecipeBundle::layout.html.twig" %}
 
 {% block body -%}
     <h1>Ingredient</h1>
@@ -16,17 +16,17 @@
         </tbody>
     </table>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('ingredient') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('ingredient_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('ingredient') }}">
+                Back to the list
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('ingredient_edit', { 'id': entity.id }) }}">
+                Edit
+            </a>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
 {% endblock %}

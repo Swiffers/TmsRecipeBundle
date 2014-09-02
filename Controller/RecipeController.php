@@ -87,10 +87,6 @@ class RecipeController extends Controller
     public function newAction()
     {
         $recipe = new Recipe();
-        $ingredient1 = new Ingredient();
-        $recipe->getIngredients()->add($ingredient1);
-        $ingredient2 = new Ingredient();
-        $recipe->getIngredients()->add($ingredient2);
         $form = $this->createForm(new RecipeCreateType(), $recipe, array(
             'action' => $this->generateUrl('recipe_create'),
             'method' => 'POST',
@@ -211,7 +207,6 @@ class RecipeController extends Controller
         ));
         $editForm->handleRequest($request);
         if ($editForm->isValid()) {
-//            var_dump($originalIngredients, $recipe->getIngredients()); die;
             foreach ($originalIngredients as $ingredient) {
                 if ($recipe->getIngredients()->contains($ingredient) == false) {
                     $recipe->getIngredients()->removeElement($ingredient);

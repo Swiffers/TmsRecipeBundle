@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends "TmsRecipeBundle::layout.html.twig" %}
 
 {% block title %}Liste des recettes{% endblock %}
 {% block body -%}
@@ -40,4 +40,4 @@
     <a href="{{ path('recipe_new') }}" class="btn btn-success">
         Nouvelle recette
     </a>
-    {% endblock %}
+{% endblock %}
